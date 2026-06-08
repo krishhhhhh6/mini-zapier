@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgencyFlow — Automation Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="shell">
+
+<!-- ===== SIDEBAR ===== -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">⚡</div>
+    <div>
+      <div class="logo-text">AgencyFlow</div>
+      <div class="logo-sub">Automation Platform</div>
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Workspace</div>
+    <div class="nav-item active" onclick="goPage('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="goPage('leads')"><span class="nav-icon">👤</span> Leads <span class="badge badge-accent" id="nav-badge" style="margin-left:auto;font-size:10px;padding:1px 6px">0</span></div>
+    <div class="nav-item" onclick="goPage('workflows')"><span class="nav-icon">⚙️</span> Workflows</div>
+    <div class="nav-item" onclick="goPage('integrations')"><span class="nav-icon">🔌</span> Integrations</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Automation</div>
+    <div class="nav-item" onclick="goPage('templates')"><span class="nav-icon">📝</span> Email Templates</div>
+    <div class="nav-item" onclick="goPage('logs')"><span class="nav-icon">📋</span> Activity Log</div>
+    <div class="nav-item" onclick="goPage('analytics')"><span class="nav-icon">📈</span> Analytics</div>
+  </div>
+  <div class="nav-section" style="margin-top:8px">
+    <div class="nav-label">Settings</div>
+    <div class="nav-item" onclick="goPage('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="status-row"><div class="pulse"></div><div class="sidebar-status">All systems active</div></div>
+    <div class="sidebar-status" style="color:var(--text3);font-size:10px;margin-top:2px">Last sync: just now</div>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page active">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="page-title">Dashboard</div>
+        <div class="page-sub">Real-time lead automation overview</div>
+      </div>
+      <div class="topbar-right">
+        <span class="badge badge-green"><span class="pulse" style="margin-right:4px"></span>Live</span>
+        <button class="btn btn-primary btn-sm" onclick="goPage('leads')">View All Leads →</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="stats-grid">
+        <div class="stat-card accent">
+          <div class="stat-label">Total Leads</div>
+          <div class="stat-value" id="s-total">0</div>
+          <div class="stat-delta" style="color:var(--text3)">No data yet</div>
+          <div class="stat-icon">👤</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Synced to Sheets</div>
+          <div class="stat-value" id="s-synced">0</div>
+          <div class="stat-delta" style="color:var(--text3)">No data yet</div>
+          <div class="stat-icon">📊</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-label">WhatsApp Sent</div>
+          <div class="stat-value" id="s-wa">0</div>
+          <div class="stat-delta" style="color:var(--text3)">No data yet</div>
+          <div class="stat-icon">💬</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-label">Failed Actions</div>
+          <div class="stat-value" id="s-fail">0</div>
+          <div class="stat-delta" style="color:var(--text3)">No data yet</div>
+          <div class="stat-icon">⚠️</div>
+        </div>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head">
+          <div class="card-title">⚡ Automation Pipeline</div>
+          <span class="badge badge-green">Active</span>
+        </div>
+        <div class="card-body">
+          <div class="pipe-grid">
+            <div class="pipe-step active"><span class="pipe-step-icon">📱</span><div class="pipe-step-name">Meta Ads</div><div class="pipe-step-count" id="p1">0 fetched</div><span class="pipe-connector">›</span></div>
+            <div class="pipe-step active"><span class="pipe-step-icon">📊</span><div class="pipe-step-name">Google Sheets</div><div class="pipe-step-count" id="p2">0 saved</div><span class="pipe-connector">›</span></div>
+            <div class="pipe-step active"><span class="pipe-step-icon">🗂️</span><div class="pipe-step-name">CRM</div><div class="pipe-step-count" id="p3">0 pushed</div><span class="pipe-connector">›</span></div>
+            <div class="pipe-step active"><span class="pipe-step-icon">💬</span><div class="pipe-step-name">WhatsApp</div><div class="pipe-step-count" id="p4">0 notified</div><span class="pipe-connector">›</span></div>
+            <div class="pipe-step active"><span class="pipe-step-icon">✉️</span><div class="pipe-step-name">Email</div><div class="pipe-step-count" id="p5">0 sent</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">👥 Recent Leads</div>
+            <button class="btn btn-sm" onclick="goPage('leads')">View all</button>
+          </div>
+          <div class="card-body" style="padding:0">
+            <table class="lead-table">
+              <thead><tr><th>Lead</th><th>Source</th><th>Status</th><th>Time</th></tr></thead>
+              <tbody id="recent-leads"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">📋 Live Activity</div>
+            <span class="badge badge-accent">Real-time</span>
+          </div>
+          <div class="card-body" style="padding:0 20px">
+            <div class="log-list" id="dash-log"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Integration Health -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">🔌 Integration Health</div>
+          <button class="btn btn-sm" onclick="goPage('integrations')">Manage</button>
+        </div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+            <div class="pipe-step active" style="padding:12px;cursor:pointer" onclick="goPage('integrations')">
+              <span class="pipe-step-icon" style="font-size:18px">📱</span>
+              <div class="pipe-step-name" style="font-size:11px">Meta Leads</div>
+              <div class="badge badge-green" style="font-size:10px;margin-top:4px">Connected</div>
+            </div>
+            <div class="pipe-step active" style="padding:12px;cursor:pointer" onclick="goPage('integrations')">
+              <span class="pipe-step-icon" style="font-size:18px">📊</span>
+              <div class="pipe-step-name" style="font-size:11px">Google Sheets</div>
+              <div class="badge badge-green" style="font-size:10px;margin-top:4px">Syncing</div>
+            </div>
+            <div class="pipe-step active" style="padding:12px;cursor:pointer" onclick="goPage('integrations')">
+              <span class="pipe-step-icon" style="font-size:18px">🗂️</span>
+              <div class="pipe-step-name" style="font-size:11px">CRM</div>
+              <div class="badge badge-green" style="font-size:10px;margin-top:4px">Connected</div>
+            </div>
+            <div class="pipe-step active" style="padding:12px;cursor:pointer" onclick="goPage('integrations')">
+              <span class="pipe-step-icon" style="font-size:18px">💬</span>
+              <div class="pipe-step-name" style="font-size:11px">WhatsApp</div>
+              <div class="badge badge-green" style="font-size:10px;margin-top:4px">Active</div>
+            </div>
+            <div class="pipe-step active" style="padding:12px;cursor:pointer" onclick="goPage('integrations')">
+              <span class="pipe-step-icon" style="font-size:18px">✉️</span>
+              <div class="pipe-step-name" style="font-size:11px">Email (SMTP)</div>
+              <div class="badge badge-green" style="font-size:10px;margin-top:4px">Active</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEADS -->
+  <div id="page-leads" class="page">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="page-title">Lead Management</div>
+        <div class="page-sub">All incoming leads from Meta Ads</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" onclick="exportLeads()">⬇ Export CSV</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="tabs">
+        <div class="tab active" onclick="filterLeads('all',this)">All Leads</div>
+        <div class="tab" onclick="filterLeads('new',this)">New</div>
+        <div class="tab" onclick="filterLeads('contacted',this)">Contacted</div>
+        <div class="tab" onclick="filterLeads('synced',this)">Synced</div>
+        <div class="tab" onclick="filterLeads('failed',this)">Failed</div>
+      </div>
+      <div class="card">
+        <div class="card-body" style="padding:0">
+          <table class="lead-table" style="width:100%">
+            <thead>
+              <tr>
+                <th style="padding-left:20px">Lead</th><th>Phone</th><th>Email</th>
+                <th>Source</th><th>Campaign</th><th>Sheets</th>
+                <th>CRM</th><th>WhatsApp</th><th>Email</th><th>Time</th>
+              </tr>
+            </thead>
+            <tbody id="leads-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKFLOWS -->
+  <div id="page-workflows" class="page">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="page-title">Automation Workflows</div>
+        <div class="page-sub">Configure your lead automation pipeline</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" onclick="saveWorkflow()">💾 Save Workflow</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head">
+          <div class="card-title">⚡ Default Lead Workflow</div>
+          <span class="badge badge-green">Active</span>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px 0">
+            <div class="wf-box trigger"><span class="wf-icon">📱</span>Meta Lead</div>
+            <div class="wf-arrow"></div>
+            <div class="wf-box" id="wf-sheets" onclick="toggleWF('sheets')"><span class="wf-icon">📊</span>→ Sheets</div>
+            <div class="wf-arrow"></div>
+            <div class="wf-box" id="wf-crm" onclick="toggleWF('crm')"><span class="wf-icon">🗂️</span>→ CRM</div>
+            <div class="wf-arrow"></div>
+            <div class="wf-box" id="wf-wa" onclick="toggleWF('wa')"><span class="wf-icon">💬</span>→ WhatsApp</div>
+            <div class="wf-arrow"></div>
+            <div class="wf-box" id="wf-email" onclick="toggleWF('email')"><span class="wf-icon">✉️</span>→ Email</div>
+          </div>
+          <div style="margin-top:14px;font-size:12px;color:var(--text3)">Click any step to enable/disable it in the pipeline</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="card">
+          <div class="card-head"><div class="card-title">📊 Google Sheets Config</div></div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">Spreadsheet ID</label><input class="form-input" placeholder="1BxiMVs0XRA5nFMd..." value="1BxiMVs0XRA5nFMdK..."></div>
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">Sheet Name / Tab</label><input class="form-input" placeholder="Leads" value="Agency Leads"></div>
+            <div class="form-group"><label class="form-label">Columns to Sync</label>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+                <span class="chip">✓ Name</span><span class="chip">✓ Phone</span><span class="chip">✓ Email</span><span class="chip">✓ Source</span><span class="chip">✓ Campaign</span><span class="chip">✓ Timestamp</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">💬 WhatsApp Notification</div></div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">WhatsApp API (Meta Cloud)</label><input class="form-input" placeholder="Phone number ID..." value="114526xxxxx"></div>
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">Notify Numbers</label><input class="form-input" placeholder="Enter numbers" value=""></div>
+            <div class="form-group"><label class="form-label">Notify Lead Also?</label>
+              <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+                <div class="toggle on" id="t-notify-lead" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+                <span style="font-size:12px;color:var(--text2)">Send welcome message to lead</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">🗂️ CRM Integration</div></div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">CRM Platform</label>
+              <select class="form-input"><option>HubSpot</option><option>Salesforce</option><option>Zoho CRM</option><option>Pipedrive</option><option>Freshsales</option></select>
+            </div>
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">API Key</label><input class="form-input" type="password" value="pat-na1-xxxx-xxxx"></div>
+            <div class="form-group"><label class="form-label">Default Pipeline Stage</label>
+              <select class="form-input"><option>New Lead</option><option>Qualified</option><option>In Progress</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">📱 Meta Leads Config</div></div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">Facebook Page ID</label><input class="form-input" placeholder="Enter page ID" value=""></div>
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">Lead Form</label>
+              <select class="form-input"><option>Digital Marketing Services Form</option><option>SEO Inquiry Form</option><option>Free Consultation Form</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">Fetch Interval</label>
+              <select class="form-input"><option>Every minute</option><option>Every 5 minutes</option><option>Real-time (webhook)</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTEGRATIONS -->
+  <div id="page-integrations" class="page">
+    <div class="topbar">
+      <div class="topbar-left"><div class="page-title">Integrations</div><div class="page-sub">Manage all connected services</div></div>
+    </div>
+    <div class="content">
+      <div class="int-list">
+        <div class="int-row">
+          <div class="int-logo" style="background:#1877f215">📱</div>
+          <div class="int-info"><div class="int-name">Meta Lead Ads</div><div class="int-detail">Not configured — connect your Meta lead source to start ingesting leads</div></div>
+          <div class="int-toggle"><span class="badge badge-orange">Disconnected</span><div class="toggle" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div></div>
+        </div>
+        <div class="int-row">
+          <div class="int-logo" style="background:#0f9d5815">📊</div>
+          <div class="int-info"><div class="int-name">Google Sheets</div><div class="int-detail">Not configured — add your spreadsheet ID and sheet name</div></div>
+          <div class="int-toggle"><span class="badge badge-orange">Disconnected</span><div class="toggle" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div></div>
+        </div>
+        <div class="int-row">
+          <div class="int-logo" style="background:#ff7a5915">🗂️</div>
+          <div class="int-info"><div class="int-name">HubSpot CRM</div><div class="int-detail">Not configured — connect your CRM API to create contacts</div></div>
+          <div class="int-toggle"><span class="badge badge-orange">Disconnected</span><div class="toggle" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div></div>
+        </div>
+        <div class="int-row">
+          <div class="int-logo" style="background:#25d36615">💬</div>
+          <div class="int-info"><div class="int-name">WhatsApp Business API (Meta Cloud)</div><div class="int-detail">Not configured — add your WhatsApp API credentials</div></div>
+          <div class="int-toggle"><span class="badge badge-orange">Disconnected</span><div class="toggle" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div></div>
+        </div>
+        <div class="int-row">
+          <div class="int-logo" style="background:#4285f415">✉️</div>
+          <div class="int-info"><div class="int-name">Email Automation (SMTP / SendGrid)</div><div class="int-detail">Not configured — add your SMTP or SendGrid settings</div></div>
+          <div class="int-toggle"><span class="badge badge-orange">Disconnected</span><div class="toggle" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div></div>
+        </div>
+        <div class="int-row" style="opacity:.5">
+          <div class="int-logo" style="background:#ff000015">🔴</div>
+          <div class="int-info"><div class="int-name">Slack Notifications</div><div class="int-detail">Not connected — post lead alerts to a Slack channel</div></div>
+          <div class="int-toggle"><span class="badge badge-orange">Disconnected</span><button class="btn btn-sm" onclick="showNotif('Slack','Opening OAuth flow...','💬')">Connect</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL TEMPLATES -->
+  <div id="page-templates" class="page">
+    <div class="topbar">
+      <div class="topbar-left"><div class="page-title">Email Templates</div><div class="page-sub">Customizable automated email responses</div></div>
+      <div class="topbar-right"><button class="btn btn-primary btn-sm" onclick="saveTemplate()">💾 Save Template</button></div>
+    </div>
+    <div class="content">
+      <div style="display:grid;grid-template-columns:240px 1fr;gap:16px">
+        <div class="card">
+          <div class="card-head" style="padding:12px 14px"><div class="card-title" style="font-size:12px">Templates</div></div>
+          <div class="card-body" style="padding:8px"><div id="tpl-list"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">✏️ Edit Template</div>
+            <div style="display:flex;gap:8px"><span class="chip">{{name}}</span><span class="chip">{{phone}}</span><span class="chip">{{email}}</span><span class="chip">{{source}}</span></div>
+          </div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom:12px"><label class="form-label">Template Name</label><input class="form-input" id="tpl-name" value="New Lead Welcome"></div>
+            <div class="form-group" style="margin-bottom:12px"><label class="form-label">Subject Line</label><input class="form-input" id="tpl-subject" value="Thanks for reaching out, {{name}}! 🎯"></div>
+            <div class="form-group" style="margin-bottom:12px"><label class="form-label">To</label>
+              <select class="form-input" id="tpl-to"><option>Lead ({{email}})</option><option>Sales Team</option><option>Both</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">Email Body</label>
+              <textarea class="form-input" id="tpl-body" style="min-height:140px">Hi {{name}},
+
+Thank you for expressing interest in our digital marketing services!
+
+We've received your inquiry and our team will reach out to you at {{phone}} within 24 hours.
+
+In the meantime, feel free to explore our case studies and pricing at our website.
+
+Best regards,
+The Agency Team</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGS -->
+  <div id="page-logs" class="page">
+    <div class="topbar">
+      <div class="topbar-left"><div class="page-title">Activity Log</div><div class="page-sub">Full automation event history</div></div>
+      <div class="topbar-right"><button class="btn btn-sm" onclick="clearLogs()">Clear Logs</button></div>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-body" style="padding:0 20px">
+          <div class="log-list" id="full-log" style="max-height:600px;overflow-y:auto"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div id="page-analytics" class="page">
+    <div class="topbar">
+      <div class="topbar-left"><div class="page-title">Analytics</div><div class="page-sub">Lead funnel performance metrics</div></div>
+    </div>
+    <div class="content">
+      <div class="stats-grid" style="margin-bottom:16px">
+        <div class="stat-card accent"><div class="stat-label">This Week</div><div class="stat-value">—</div><div class="stat-delta" style="color:var(--text3)">No data yet</div></div>
+        <div class="stat-card green"><div class="stat-label">Conversion Rate</div><div class="stat-value">—</div><div class="stat-delta" style="color:var(--text3)">No data yet</div></div>
+        <div class="stat-card orange"><div class="stat-label">Avg Response Time</div><div class="stat-value">—</div><div class="stat-delta" style="color:var(--text3)">No data yet</div></div>
+        <div class="stat-card"><div class="stat-label">Pipeline Success</div><div class="stat-value">—</div><div class="stat-delta" style="color:var(--text3)">No data yet</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card"><div class="card-head"><div class="card-title">📊 Leads by Source</div></div><div class="card-body"><div id="source-chart"></div></div></div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">📈 Daily Leads (Last 14 Days)</div></div>
+          <div class="card-body" style="padding-top:24px">
+            <div id="daily-chart" style="display:flex;align-items:flex-end;gap:6px;height:120px"></div>
+            <div id="daily-labels" style="display:flex;gap:6px;margin-top:6px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="page-settings" class="page">
+    <div class="topbar">
+      <div class="topbar-left"><div class="page-title">Settings</div><div class="page-sub">Agency & platform configuration</div></div>
+      <div class="topbar-right"><button class="btn btn-primary btn-sm" onclick="showNotif('Settings','Configuration saved successfully!','✅')">Save Changes</button></div>
+    </div>
+    <div class="content">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-head"><div class="card-title">🏢 Agency Details</div></div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">Agency Name</label><input class="form-input" value="Your Agency Name"></div>
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">Contact Email</label><input class="form-input" placeholder="hello@youragency.com" value=""></div>
+            <div class="form-group" style="margin-bottom:10px"><label class="form-label">Phone</label><input class="form-input" placeholder="Enter agency phone" value=""></div>
+            <div class="form-group"><label class="form-label">Timezone</label>
+              <select class="form-input"><option>Asia/Kolkata (IST)</option><option>UTC</option><option>America/New_York</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">🔔 Notification Preferences</div></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div><div style="font-size:13px;font-weight:500">WhatsApp on new lead</div><div style="font-size:11px;color:var(--text3)">Instant notification to sales team</div></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div><div style="font-size:13px;font-weight:500">Email on new lead</div><div style="font-size:11px;color:var(--text3)">Send auto-reply to lead + team</div></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div><div style="font-size:13px;font-weight:500">Failure alerts</div><div style="font-size:11px;color:var(--text3)">Alert on pipeline errors</div></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div><div style="font-size:13px;font-weight:500">Daily digest email</div><div style="font-size:11px;color:var(--text3)">Summary at 9am IST</div></div>
+                <div class="toggle" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- Toast Notification -->
+<div class="notif" id="notif">
+  <div class="notif-icon" id="notif-icon">✅</div>
+  <div class="notif-content">
+    <div class="notif-title" id="notif-title">Success</div>
+    <div class="notif-sub" id="notif-sub">Action completed</div>
+  </div>
+</div>
+
+<script src="json/app.js"></script>
+</body>
+</html>
