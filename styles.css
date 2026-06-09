@@ -355,56 +355,185 @@ textarea.form-input      { resize: vertical; min-height: 80px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
 
 /* ===== RESPONSIVE ===== */
+
+/* --- Tablet: 1100px --- */
 @media (max-width: 1100px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .two-col    { grid-template-columns: 1fr; }
 }
+
+/* --- Small tablet: 900px --- */
 @media (max-width: 900px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .pipe-grid  { grid-template-columns: repeat(2, 1fr); }
+  .pipe-grid  { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* --- Collapsed sidebar: 800px --- */
 @media (max-width: 800px) {
   .sidebar {
     width: 60px;
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
+    top: 0; left: 0; bottom: 0;
     z-index: 12;
     padding: 16px 0;
+    overflow: hidden;
   }
   .main { margin-left: 60px; }
   .logo { padding: 0 0 18px; justify-content: center; }
-  .logo-text, .logo-sub, .nav-item span:not(.nav-icon), .nav-label, .sidebar-status { display: none; }
+  .logo-text, .logo-sub, .nav-label, .sidebar-status { display: none; }
+  .nav-item span:last-child:not(.nav-icon) { display: none; }
   .nav-item { justify-content: center; padding: 12px 0; }
   .sidebar-footer { display: none; }
   .content { padding: 18px 16px; }
-  .topbar { padding: 12px 16px; }
+  .topbar  { padding: 12px 16px; }
   .pipe-grid { grid-template-columns: repeat(2, 1fr); }
-  .tabs { flex-wrap: wrap; gap: 6px; }
-  .tab { flex: 1 1 auto; text-align: center; }
-  .lead-table { display: block; width: 100%; overflow-x: auto; }
-  .lead-table thead, .lead-table tbody, .lead-table tr { display: table; width: 100%; table-layout: fixed; }
-  .int-row { flex-wrap: wrap; align-items: flex-start; }
+  .tabs { flex-wrap: wrap; gap: 4px; }
+  .tab  { flex: 1 1 auto; text-align: center; }
+  /* Tables scroll horizontally instead of overflowing */
+  .lead-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .int-row    { flex-wrap: wrap; align-items: flex-start; }
   .int-toggle { width: 100%; justify-content: flex-start; margin-top: 10px; }
+  /* Force all inline grid overrides to 1 col */
+  [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="grid-template-columns:repeat(2"],
+  [style*="grid-template-columns: repeat(2"],
+  [style*="grid-template-columns:240px"],
+  [style*="grid-template-columns: 240px"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Integration health icons grid */
+  [style*="grid-template-columns:repeat(5"],
+  [style*="grid-template-columns: repeat(5"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
 }
+
+/* --- Mobile: 640px --- */
 @media (max-width: 640px) {
-  .main { margin-left: 60px; }
-  .content { padding: 16px 14px; }
-  .topbar { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .topbar-right { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
-  .page-title { font-size: 16px; }
-  .stats-grid { grid-template-columns: 1fr; }
-  .pipe-grid { grid-template-columns: 1fr; }
-  .pipe-step { padding: 12px; }
-  .pipe-step .pipe-connector { display: none; }
-  .tabs { gap: 6px; }
-  .tab { padding: 10px 14px; font-size: 12px; }
-  .card-head, .card-body { padding-left: 16px; padding-right: 16px; }
-  .card-body { padding-top: 16px; padding-bottom: 16px; }
-  .card { margin-bottom: 14px; }
-  .wf-box { flex: 1 1 100%; }
-  .card-grid, .card-grid-two, .two-col, .content > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-  .log-list { gap: 8px; }
-  .toggle { width: 40px; }
+  .shell { flex-direction: column; height: auto; min-height: 100vh; }
+
+  /* Bottom nav bar replaces sidebar on mobile */
+  .sidebar {
+    width: 100%;
+    height: 56px;
+    position: fixed;
+    top: auto; bottom: 0; left: 0; right: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0;
+    border-right: none;
+    border-top: 1px solid var(--border);
+    z-index: 20;
+    overflow: visible;
+  }
+
+  /* Hide non-essential sidebar sections on mobile */
+  .logo,
+  .nav-label,
+  .sidebar-footer,
+  .nav-section:nth-child(3) { display: none; }
+
+  /* Show only the first nav-section items as bottom tabs */
+  .nav-section:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    justify-content: space-around;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 4px;
+    font-size: 9px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    flex: 1;
+    margin-bottom: 0;
+    border: none;
+  }
+  .nav-item span:last-child:not(.nav-icon) {
+    display: block !important;
+    font-size: 9px;
+    color: inherit;
+  }
+  .nav-icon { width: auto; font-size: 18px; opacity: 1; }
+
+  /* Main content gets bottom padding so it doesn't hide behind nav */
+  .main {
+    margin-left: 0;
+    margin-bottom: 56px;
+    width: 100%;
+  }
+
+  /* Topbar stacks on mobile */
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    position: sticky; top: 0;
+  }
+  .topbar-right {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .page-title { font-size: 15px; }
+
+  .content { padding: 14px 12px; }
+
+  /* Stats: 2 columns on mobile (readable) */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+  .stat-value { font-size: 22px; }
+
+  /* Pipeline: single column */
+  .pipe-grid { grid-template-columns: 1fr; gap: 6px; }
+  .pipe-step { padding: 10px 14px; display: flex; flex-direction: row; align-items: center; gap: 10px; text-align: left; }
+  .pipe-step-icon { font-size: 18px; margin-bottom: 0; }
+  .pipe-connector { display: none; }
+
+  /* Two-col layout collapses */
+  .two-col { grid-template-columns: 1fr; }
+
+  /* Cards */
+  .card { margin-bottom: 12px; }
+  .card-head { padding: 12px 14px; flex-wrap: wrap; gap: 6px; }
+  .card-body { padding: 12px 14px; }
+
+  /* Lead table scrolls */
+  .lead-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+
+  /* Tabs scroll horizontally */
+  .tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  .tab  { flex-shrink: 0; padding: 8px 14px; font-size: 12px; }
+
+  /* Workflow boxes stack */
+  .wf-box   { flex: 1 1 100%; min-width: 0; }
+  .wf-arrow { display: none; }
+
+  /* Integration rows */
+  .int-row    { flex-wrap: wrap; }
+  .int-toggle { width: 100%; justify-content: flex-start; margin-top: 8px; }
+
+  /* All inline grid styles go single column */
+  [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+
+  /* Template editor sidebar + editor */
+  [style*="grid-template-columns:240px"],
+  [style*="grid-template-columns: 240px"] { grid-template-columns: 1fr !important; }
+
+  /* Chips wrap nicely */
+  .chip { font-size: 10px; padding: 2px 6px; }
+
+  /* Log items */
+  .log-item { font-size: 11px; }
+
+  /* Notif toast full-width on mobile */
+  .notif { left: 12px; right: 12px; bottom: 68px; max-width: none; }
 }
